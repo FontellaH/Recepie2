@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title> Dashboard</title>
+
+</head>
+
+<body>
+    <div class="container p-4 bg-light">
+        <div class='d-flex align-items-center justify-content-between'>
+            <h1>Welcome {{logged_user.first_name}}!</h1>
+            <div>
+                <a class='btn btn-primary' href='/recipes/new'> + Create</a>
+                <a class='btn btn-dark' href='/users/logout'>Logout</a>
+            </div>
+        </div>
+        <p>All posted recipes</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> Name</th>
+                    <th>Under</th>
+                    <th>Posted y</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- looking for all the recipes in recipes -->
+                {% for recipe in all_recipes: %} <!-- for loop requesting all recipes-->
+                <tr>
+                    <td>{{recipe.name}}</td> <!-- request recipe name-->
+                    {% if recipe.under_over==1: %} <!-- asking if the recipe is under 30 min, if so return yes-->
+                    <td>Yes</td>
+                    {% else: %} <!-- otherwise if the recipe is over 30 min, if so return no-->
+                    <td>No</td>
+                    {% endif %} <!-- ending if statement-->
+                    <td>{{recipe.chef.first_name }}</td>
+                    <td>
+                        <a href="/recipes/{{recipe.id}}/view">view recipes</a> <!-- link to view the recipe-->
+                        {%if session['user_id'] == recipe.user_id %} <!-- user has to be logged in to see this link-->
+                        <a href="/recipes/{{recipe.id}}/edit">|edit</a> <!-- will redirect to edit the recipe-->
+                        <a href="/recipes/{{recipe.id}}/delete">|delete</a> <!-- will delete recipe from all recipes-->
+                        {% endif %} <!-- ending if statement-->
+                    </td>
+                </tr>
+                {% endfor %}        
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
